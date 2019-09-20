@@ -1,28 +1,36 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import logo from '~/assets/logo.svg';
-// import { Container } from './styles';
+import { signInRequest } from '~/store/modules/auth/actions';
 
 const schema = Yup.object().shape({
   email: Yup.string()
     .email('Insira um e-email válido.')
     .required('O e-mail é obrigatório.'),
   password: Yup.string()
-    .min(6, 'No mínimo 6 dítitos.')
+    .min(6, 'No mínimo 6 dígitos.')
     .required('A senha é obrigatória.'),
 });
 
 export default function SignIn() {
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.auth.loading);
+
+  async function handleSubmit({ email, password }) {
+    dispatch(signInRequest(email, password));
+  }
   return (
     <>
       <img src={logo} alt="MeetApp" />
-      <Form schema={schema}>
+      <Form schema={schema} onSubmit={handleSubmit}>
         <Input name="email" type="email" placeholder="Seu Email" />
         <Input name="password" type="password" placeholder="Sua senha" />
 
-        <button type="submit">Entrar</button>
-        <a href="/register">Criar conta</a>
+        <button type="submit">{loading ? 'Carregando...' : 'Entrar'}</button>
+        <Link to="/register">Criar conta</Link>
       </Form>
     </>
   );
