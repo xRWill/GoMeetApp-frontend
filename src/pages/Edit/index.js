@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Form, Input } from '@rocketseat/unform';
-// import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { MdEdit } from 'react-icons/md';
 import { ptBR } from 'date-fns/locale';
+import { MdEdit } from 'react-icons/md';
 import { Container } from './styles';
 import {
   meetupUpdateRequest,

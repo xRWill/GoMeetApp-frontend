@@ -12,7 +12,7 @@ export default function BannerInput() {
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
 
-  const ref = useRef();
+  const ref = useRef(null);
 
   useEffect(() => {
     if (ref.current) {
@@ -20,6 +20,9 @@ export default function BannerInput() {
         name: 'file_id',
         ref: ref.current,
         path: 'dataset.file',
+        clearValue: pickerRef => {
+          pickerRef.clear();
+        },
       });
     }
   }, [ref, registerField]);
@@ -27,11 +30,8 @@ export default function BannerInput() {
   async function handleChange(e) {
     const data = new FormData();
     data.append('file', e.target.files[0]);
-
     const response = await api.post('files', data);
-
     const { id, url } = response.data;
-
     setFile(id);
     setPreview(url);
   }
